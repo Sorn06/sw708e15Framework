@@ -28,7 +28,7 @@ void init(uint8_t enableInterrupt, int8_t dataOrder, uint8_t master, int8_t divi
 
 }
 
-int16 transfer(int16_t val)
+int16_t transfer(int16_t val)
 {
     SPDR = val;
     while  (!(SPSR & (1<<SPIF)))  ;
