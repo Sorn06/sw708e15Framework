@@ -8,7 +8,7 @@ eclipsedownload32="http://artfiles.org/eclipse.org/technology/epp/downloads/rele
 eclipsedownload64="http://artfiles.org/eclipse.org/technology/epp/downloads/release/mars/1/eclipse-java-mars-1-linux-gtk-x86_64.tar.gz"
 hvm="http://icelab.dk/resources/icecaptools_2.1.17.jar"
 hvmsdk="http://icelab.dk/resources/icecapSDK.jar"
-INSTALL="YES"
+hvmframework="https://github.com/Sorn06/sw708e15Framework/releases/download/1.0/HVMFramework.jar"
 
 UNKNOWNARG=""
 while [[ $# > 0 ]]
@@ -41,27 +41,22 @@ else
     arch=x86
 fi
 
-#pushd $eclipseroot >/dev/null
-
-if [ $INSTALL == "YES" ]
-then
-    echo "[`date +%H:%M:%S`] Removing old installation ..." 
-    rm -fr $eclipseroot $bundlepoolDir icecapSDK.jar
-	eclipse=eclipse-linux.tar.gz
-	echo "[`date +%H:%M:%S`] Downloading eclipse ...";
-    wget --show-progress -q -r -O $eclipse $eclipsedownload
-	echo "[`date +%H:%M:%S`] Unpacking $eclipse ...";
-    mkdir -p $eclipseroot
-	tar xzf $eclipse -C $eclipseroot --strip 1
-    rm $eclipse
-	echo "[`date +%H:%M:%S`] Installing HVM plugin ...";
-    wget --show-progress -q -P $pluginsDir $hvm
-	echo "[`date +%H:%M:%S`] Downloading HVM SDK ...";
-    wget --show-progress -q -P . $hvmsdk
-fi
-
-#vm="/opt/sun-java2-5.0/bin/java"
-#vm=/opt/ibm-java2-5.0/bin/java
+# Installation process
+echo "[`date +%H:%M:%S`] Removing old installation ..." 
+rm -fr $eclipseroot $bundlepoolDir icecapSDK.jar
+eclipse=eclipse-linux.tar.gz
+echo "[`date +%H:%M:%S`] Downloading eclipse ...";
+wget --show-progress -q -r -O $eclipse $eclipsedownload
+echo "[`date +%H:%M:%S`] Unpacking $eclipse ...";
+mkdir -p $eclipseroot
+tar xzf $eclipse -C $eclipseroot --strip 1
+rm $eclipse
+echo "[`date +%H:%M:%S`] Installing HVM plugin ...";
+wget --show-progress -q -P $pluginsDir $hvm
+echo "[`date +%H:%M:%S`] Downloading HVM SDK ...";
+wget --show-progress -q -P . $hvmsdk
+echo "[`date +%H:%M:%S`] Downloading HVM Framework...";
+wget --show-progress -q -P . $hvmframework
 
 echo ""
 echo "Using:       workspace=$workspace";
@@ -70,7 +65,6 @@ echo "Destination: $bundlepoolDir";
 echo ""
 
 echo "[`date +%H:%M:%S`] Running p2.director ... ";
-#  -console -noexit -debug 
 $eclipseroot/eclipse -nosplash \
   -consolelog -clean \
   -application org.eclipse.equinox.p2.director \
@@ -84,15 +78,4 @@ $eclipseroot/eclipse -nosplash \
   -vmargs \
     -Declipse.p2.data.area=$eclipseroot/p2 \
     -Xms128M -Xmx256M 
-echo "Install finished";
-
-echo "";
-echo -n "[`date +%H:%M:%S`] Starting Eclipse workbench (to verify installation) ...";
-#  -console -noexit -debug 
-$eclipseroot/eclipse \
-  -consolelog -clean \
-  -vmargs \
-    -Xms128M -Xmx256M \
-
-#popd >/dev/null
-echo " done."
+echo "Installation completed";
