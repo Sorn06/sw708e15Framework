@@ -19,7 +19,7 @@ public class SPI {
 	public static final byte SPI_CLOCK_PHASE_TRAILING = 0x01;
 	
 	//Native methods
-	public static native void nInit(boolean interrupt, byte dataOrder, 
+	private static native void nInit(boolean interrupt, byte dataOrder, 
 			boolean master, byte clockDivider, byte clockPolarity, byte clockPhase, boolean doubleClockRate);
 	
 	private static native void nTransfer(int [] params);
