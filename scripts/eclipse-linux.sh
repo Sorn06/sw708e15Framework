@@ -43,7 +43,7 @@ fi
 
 # Installation process
 echo "[`date +%H:%M:%S`] Removing old installation ..." 
-rm -fr $eclipseroot $bundlepoolDir icecapSDK.jar
+rm -fr $eclipseroot $bundlepoolDir icecapSDK.jar HVMFramework.jar
 eclipse=eclipse-linux.tar.gz
 echo "[`date +%H:%M:%S`] Downloading eclipse ...";
 wget --show-progress -q -r -O $eclipse $eclipsedownload
