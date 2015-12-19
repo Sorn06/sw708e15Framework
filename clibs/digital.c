@@ -24,6 +24,12 @@ int16 n_HVMFramework_Digital_PinMode(int32 *sp)
 {
   const int pin = sp[0];
   const int out = sp[1];
-  pinModeFast(pin,out);
+  if(out == 2)
+  {
+    pinModeFast(pin,0);
+    digitalWriteFast(pin,1);
+  } else {
+    pinModeFast(pin,out);
+  }
   return -1;
 }
